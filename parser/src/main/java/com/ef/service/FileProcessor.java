@@ -1,10 +1,10 @@
-package com.wallethub.feeder.service;
+package com.ef.service;
 
-import com.wallethub.feeder.model.HttpAccess;
-import com.wallethub.feeder.repository.HttpAccessRepository;
+import com.ef.model.HttpAccess;
+import com.ef.repository.BlockedIpRepository;
+import com.ef.repository.HttpAccessRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -13,64 +13,50 @@ import java.io.FileNotFoundException;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.CompletableFuture;
 
 @Service
-public class FeederService {
+public class FileProcessor {
+    private static final String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss.SSS";
 
     private final HttpAccessRepository httpAccessRepository;
+    private final BlockedIpRepository blockedIpRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(FeederService.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileProcessor.class);
 
-    public FeederService(HttpAccessRepository httpAccessRepository) {
+    public FileProcessor(HttpAccessRepository httpAccessRepository, BlockedIpRepository blockedIpRepository) {
         this.httpAccessRepository = httpAccessRepository;
+        this.blockedIpRepository = blockedIpRepository;
     }
 
-    public void processFiles(List<String> filePaths) {
-        if(filePaths == null || filePaths.isEmpty()) {
-            return;
-        }
-        for(String filePath : filePaths) {
-            logger.info("Processing file {}", filePath);
-            File file = new File(filePath);
-            if(!file.exists()) {
-                logger.error("File {} can't be found", filePath);
-            }
-            this.processFile(file);
-        }
-    }
-
-    private void processFile(File file) {
+    public void processFile(File file) {
         FileInputStream fis = null;
         Scanner scanner = null;
         try {
             fis = new FileInputStream(file);
+            this.cleanUpDatabase();
             scanner = new Scanner(fis, Charset.defaultCharset().name());
-            while(scanner.hasNextLine()) {
+            while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 HttpAccess entity = this.parseLine(line);
-                this.triggerHttpAccessInsert(entity);
+                this.httpAccessRepository.save(entity);
                 logger.info("Processing line {}", line);
             }
 
-        }
-        catch (FileNotFoundException fnfe) {
+        } catch (FileNotFoundException fileNotFoundException) {
             logger.error("File {} can't be found", file.getAbsolutePath());
         }
     }
 
-    @Async
-    public CompletableFuture<HttpAccess> triggerHttpAccessInsert(HttpAccess httpAccess) {
-        logger.info("Persisting httpAccess {}" , httpAccess);
-        return CompletableFuture.completedFuture(this.httpAccessRepository.save(httpAccess));
+    protected void cleanUpDatabase() {
+        this.httpAccessRepository.deleteAll();
+        this.blockedIpRepository.deleteAll();
     }
 
-    public HttpAccess parseLine(String line) {
+    protected HttpAccess parseLine(String line) {
         // 2017-01-01 00:00:11.763|192.168.234.82|"GET / HTTP/1.1"|200|"swcd (unknown version) CFNetwork/808.2.16 Darwin/15.6.0"
         String[] args = line.split("\\|");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_PATTERN);
         LocalDateTime timestamp = LocalDateTime.parse(args[0], formatter);
         String ipAddress = args[1];
         String protocolInfo = stripDoubleQuotesFromBeginningAndEnd(args[2]);

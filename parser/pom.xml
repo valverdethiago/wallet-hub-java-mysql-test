@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.wallethub</groupId>
-	<artifactId>test-feeder</artifactId>
+	<artifactId>parser</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>test-feeder</name>
-	<description>Project to read log file and feed a mysql database with extracted data</description>
+	<name>parser</name>
+	<description>Project to read log accessLog and feed a mysql database with extracted data</description>
 
 	<properties>
 		<java.version>1.8</java.version>
