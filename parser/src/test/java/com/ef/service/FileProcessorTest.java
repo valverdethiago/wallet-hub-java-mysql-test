@@ -1,4 +1,4 @@
-package com.wallethub.feeder.service;
+package com.ef.service;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,9 +10,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class FeederServiceTest {
+public class FileProcessorTest {
     @Autowired
-    private FeederService feederService;
+    private FileProcessor feederService;
 
     @Test
     public void test() {

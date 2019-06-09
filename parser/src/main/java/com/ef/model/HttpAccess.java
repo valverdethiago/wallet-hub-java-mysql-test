@@ -1,4 +1,4 @@
-package com.wallethub.feeder.model;
+package com.ef.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,21 +9,21 @@ public class HttpAccess {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime time;
+    private LocalDateTime date;
     private String ipAddress;
     private String protocolInfo;
-    private String httpStatusCode;
-    private String requestDetail;
+    private String status;
+    private String userAgent;
 
     public HttpAccess() {
     }
 
-    public HttpAccess(LocalDateTime time, String ipAddress, String protocolInfo, String httpStatusCode, String requestDetail) {
-        this.time = time;
+    public HttpAccess(LocalDateTime date, String ipAddress, String protocolInfo, String status, String userAgent) {
+        this.date = date;
         this.ipAddress = ipAddress;
         this.protocolInfo = protocolInfo;
-        this.httpStatusCode = httpStatusCode;
-        this.requestDetail = requestDetail;
+        this.status = status;
+        this.userAgent = userAgent;
     }
 
     public Long getId() {
@@ -34,12 +34,12 @@ public class HttpAccess {
         this.id = id;
     }
 
-    public LocalDateTime getTime() {
-        return time;
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public void setTime(LocalDateTime time) {
-        this.time = time;
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
     public String getIpAddress() {
@@ -58,20 +58,20 @@ public class HttpAccess {
         this.protocolInfo = protocolInfo;
     }
 
-    public String getHttpStatusCode() {
-        return httpStatusCode;
+    public String getStatus() {
+        return status;
     }
 
-    public void setHttpStatusCode(String httpStatusCode) {
-        this.httpStatusCode = httpStatusCode;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public String getRequestDetail() {
-        return requestDetail;
+    public String getUserAgent() {
+        return userAgent;
     }
 
-    public void setRequestDetail(String requestDetail) {
-        this.requestDetail = requestDetail;
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
     }
 
     @Override
@@ -91,11 +91,11 @@ public class HttpAccess {
     public String toString() {
         return "HttpAccess{" +
                 "id=" + id +
-                ", time=" + time +
+                ", date=" + date +
                 ", ipAddress='" + ipAddress + '\'' +
                 ", protocolInfo='" + protocolInfo + '\'' +
-                ", httpStatusCode='" + httpStatusCode + '\'' +
-                ", requestDetail='" + requestDetail + '\'' +
+                ", status='" + status + '\'' +
+                ", userAgent='" + userAgent + '\'' +
                 '}';
     }
 }

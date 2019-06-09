@@ -1,4 +1,4 @@
-package com.wallethub.feeder;
+package com.ef;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -9,7 +9,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import java.util.concurrent.Executor;
 
 @SpringBootApplication
-public class FeederApplication {
+public class Parser {
 
 	@Value("${executor.core-pool-size}")
 	private Integer corePoolSize;
@@ -21,7 +21,7 @@ public class FeederApplication {
 	private String threadNamePrefix;
 
 	public static void main(String[] args) {
-		SpringApplication.run(FeederApplication.class, args);
+		SpringApplication.run(Parser.class, args);
 	}
 
 	@Bean
