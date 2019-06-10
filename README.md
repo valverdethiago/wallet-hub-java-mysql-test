@@ -19,7 +19,7 @@ A spring-boot application was built to solve the problem. Using spring-data to a
  * BlockedIp - Entity that stores the blocked ips
  * HttpAccess - Entity that stores all the log entries provided via access.log file
  
-### Main services:
+### Project structure:
 The application classes structure is summarized by the following package division:
  * model - Stores all entities and related classes, such Duration enumeration and InputPArametersDto to deliver all the input parameters to the services;
  * repository - Stores the repositories for the two JPA entities;
@@ -31,7 +31,8 @@ The application classes structure is summarized by the following package divisio
  The application is built to be executed with the following command:
 
  ```
- java -jar parser.jar --accesslog=../access.log --startDate=2017-01-01.15:00:00 --duration=hourly --threshold=200
+ java -jar ./dist/parser.jar --accesslog=./access.log 
+     --startDate=2017-01-01.15:00:00 --duration=hourly --threshold=200
  ```
 
  It's not needed to pass the main class to be executed as spring maven plugin sets this on jar manifest file. 
