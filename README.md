@@ -8,7 +8,7 @@ The goal of this project is provide a complete solution for the proposed assignm
  * Deliverables: 
     * **Java program that can be run from command line** - [parser](./dist/parser.jar)
     * **Source Code for the Java program** - [Parser project ](./parser)
-    * **MySQL schema used for the log data** - [SQL folder] (./sql)
+    * **MySQL schema used for the log data** - [SQL folder](./sql)
     * **SQL queries for SQL test** 
         1. [Write MySQL query to find IPs that mode more than a certain number of requests for a given time period](./sql/sql_to_find_ips_with_more_requests.sql)
         2. [Write MySQL query to find requests made by a given IP](./sql/sql_to_find_access_by_ip.sql)
